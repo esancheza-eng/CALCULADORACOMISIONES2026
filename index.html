@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Comisión Terreno Internal | Marcimex</title>
+  <style>
+    :root{
+      --azul:#02314B;
+      --verde:#04D475;
+      --celeste:#43C4FA;
+      --bg:#F4F8FB;
+      --gris:#6B7A88;
+      --line:#D9E5EC;
+      --white:#FFFFFF;
+      --shadow:0 18px 45px rgba(2,49,75,.14);
+      --red:#E84C4F;
+      --yellow:#F8C84B;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(135deg,#F8FBFD 0%,#EDF6FA 100%);color:var(--azul);font-family:'Open Sans','Segoe UI',Arial,sans-serif;}
+    .app{max-width:1280px;margin:0 auto;padding:22px;}
+    .hero{background:var(--azul);border-radius:28px;padding:26px 30px;box-shadow:var(--shadow);position:relative;overflow:hidden;color:white;}
+    .hero:before{content:"";position:absolute;width:460px;height:460px;border-radius:50%;background:rgba(67,196,250,.18);right:-170px;top:-230px;}
+    .hero:after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(4,212,117,.15);right:90px;bottom:-260px;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;position:relative;z-index:1;}
+    .brand{display:flex;align-items:center;gap:14px;}
+    .logo{font-family:'Trebuchet MS',Arial,sans-serif;font-weight:800;letter-spacing:.5px;font-size:28px;line-height:1;background:white;color:var(--azul);padding:10px 14px;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.15)}
+    .subbrand{font-size:12px;color:#BEE9F7;text-transform:uppercase;letter-spacing:1.6px;font-weight:700;}
+    h1{font-family:'Trebuchet MS',Arial,sans-serif;font-size:36px;margin:22px 0 8px;line-height:1.05;position:relative;z-index:1;}
+    .lead{font-size:16px;color:#D9F5FF;max-width:830px;margin:0;position:relative;z-index:1;}
+    .pill{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 13px;font-size:13px;color:#EAFBFF;position:relative;z-index:1;}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;margin-top:20px;}
+    .card{background:var(--white);border-radius:24px;padding:22px;box-shadow:0 14px 35px rgba(2,49,75,.09);border:1px solid #E7F0F5;}
+    .card h2{font-family:'Trebuchet MS',Arial,sans-serif;font-size:21px;margin:0 0 14px;color:var(--azul);}
+    .section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
+    .badge{font-size:12px;font-weight:800;padding:7px 10px;border-radius:999px;background:#EAFBFF;color:var(--azul);border:1px solid #CFEDF8;}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+    label{display:block;font-size:12px;font-weight:800;color:#48616F;margin:0 0 7px;text-transform:uppercase;letter-spacing:.5px;}
+    select,input{width:100%;border:1px solid #D8E7EE;background:#FBFEFF;border-radius:15px;padding:13px 14px;font-size:15px;color:var(--azul);outline:none;transition:.2s;}
+    select:focus,input:focus{border-color:var(--celeste);box-shadow:0 0 0 4px rgba(67,196,250,.15)}
+    .hint{font-size:12px;color:var(--gris);margin-top:6px;line-height:1.35;}
+    .callout{background:linear-gradient(135deg,rgba(4,212,117,.12),rgba(67,196,250,.14));border:1px solid #CFF2E4;border-left:6px solid var(--verde);border-radius:18px;padding:15px;margin-top:14px;font-weight:700;line-height:1.4;}
+    .bonus-hero{margin:14px 0 4px;background:linear-gradient(135deg,#02314B,#075070);color:white;border-radius:22px;padding:22px;border:1px solid rgba(67,196,250,.24);box-shadow:0 18px 40px rgba(2,49,75,.16);position:relative;overflow:hidden;}
+    .bonus-hero:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(4,212,117,.16);right:-70px;top:-70px;}
+    .bonus-hero .bonus-label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#BEE9F7;font-weight:900;position:relative;z-index:1;}
+    .bonus-hero .bonus-amount{font-family:'Trebuchet MS',Arial,sans-serif;font-size:42px;font-weight:900;color:var(--verde);margin:7px 0 4px;position:relative;z-index:1;}
+    .bonus-hero .bonus-message{font-size:15px;line-height:1.4;color:#E9FBFF;font-weight:700;max-width:580px;position:relative;z-index:1;}
+    .mini{font-size:12px;color:var(--gris);font-weight:600;}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px;}
+    .kpi{background:white;border-radius:22px;padding:18px;border:1px solid #E2EEF4;box-shadow:0 12px 30px rgba(2,49,75,.07);}
+    .kpi .t{font-size:12px;text-transform:uppercase;color:#607480;font-weight:800;letter-spacing:.5px;}
+    .kpi .v{font-family:'Trebuchet MS',Arial,sans-serif;font-size:28px;font-weight:800;margin-top:8px;color:var(--azul);}
+    .kpi.green .v{color:#00A95A}.kpi.blue .v{color:#119ACB}.kpi.dark{background:var(--azul);color:white}.kpi.dark .t,.kpi.dark .v{color:white}.kpi.dark .v{font-size:34px;color:var(--verde)}
+    .tables{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #DDE9EF;border-radius:18px;overflow:hidden;background:white;}
+    th{background:var(--azul);color:white;text-align:left;font-size:12px;text-transform:uppercase;padding:11px 12px;letter-spacing:.4px;}
+    td{padding:10px 12px;border-top:1px solid #E7F0F5;font-size:13px;color:#143B50;}
+    tr.active td{background:rgba(4,212,117,.15);font-weight:800;color:var(--azul)}
+    .tag{display:inline-block;padding:5px 8px;border-radius:999px;background:#F2F7FA;font-weight:800;font-size:12px;}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+    button{border:none;border-radius:14px;padding:12px 16px;background:var(--azul);color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(2,49,75,.16);transition:.2s;}
+    button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    button.secondary{background:white;color:var(--azul);border:1px solid #DDE9EF;box-shadow:none}
+    button.green{background:var(--verde);color:var(--azul)}
+    .history{margin-top:20px;}
+    .history table td,.history table th{font-size:12px;padding:9px 10px;}
+    .coaching{background:linear-gradient(135deg,var(--azul),#064B69);color:white;border-radius:24px;padding:22px;box-shadow:var(--shadow);}
+    .coaching h2{color:white;margin-bottom:10px}.coaching p{color:#D9F5FF;line-height:1.45;margin:8px 0}.coaching strong{color:var(--verde)}
+    .bar{height:11px;background:#E8F1F5;border-radius:999px;overflow:hidden;margin-top:8px;}
+    .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--celeste),var(--verde));width:0%;transition:.4s;}
+    .footer-note{margin-top:18px;font-size:12px;color:#6E8290;text-align:center;}
+
+    .profile-guide{background:linear-gradient(135deg,#FFFFFF,#F4FBFE);}
+    .guide-metric{border:1px solid #E2EEF4;background:#FBFEFF;border-radius:18px;padding:15px;margin-bottom:12px;}
+    .guide-label{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#607480;font-weight:900;margin-bottom:6px;}
+    .guide-value{font-family:'Trebuchet MS',Arial,sans-serif;font-size:34px;font-weight:900;color:var(--azul);}
+    .guide-text{font-size:15px;line-height:1.45;font-weight:700;color:#143B50;}
+    .guide-steps{display:grid;gap:10px;margin-top:12px;}
+    .guide-steps div{display:flex;gap:10px;align-items:center;background:rgba(4,212,117,.10);border:1px solid #CFF2E4;border-radius:15px;padding:11px;}
+    .guide-steps strong{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;background:var(--verde);color:var(--azul);font-weight:900;}
+    .guide-steps span{font-weight:800;color:#143B50;font-size:13px;}
+    @media(max-width:950px){.grid,.tables{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}h1{font-size:30px}.form-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.app{padding:12px}.hero{padding:20px}.kpis{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.logo{font-size:24px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo">Marcimex</div>
+          <div><div class="subbrand">Cobranza Terrena · Modelo Lean</div><div style="font-weight:800">App Comisión Terreno Internal</div></div>
+        </div>
+        <div class="pill">💡 Primero contiene · Luego mejora</div>
+      </div>
+      <h1>Simulador de Comisión por Contiene y Mejora</h1>
+      <p class="lead">Selecciona tu perfil, ingresa tu cumplimiento y cobro efectivo. La app calcula tu bono fijo, comisión variable y total estimado del mes.</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="section-title"><h2>1. Datos del cobrador</h2><span class="badge">Uso individual</span></div>
+        <div class="form-grid">
+          <div><label>Perfil</label><select id="profile"></select></div>
+          <div><label>Nombre / código (opcional)</label><input id="collector" placeholder="Ej. Juan Pérez" /></div>
+          <div id="newMonthBox" style="display:none"><label>Mes de adaptación nuevo</label><select id="newMonth"><option value="1">Mes 1 · 60%</option><option value="2">Mes 2 · 90%</option><option value="3">Mes 3 · 100%</option></select><div class="hint">Aplica solo para perfil Nuevo.</div></div>
+          <div><label>% Cumplimiento Contiene</label><input id="pctContiene" inputmode="decimal" placeholder="Ej. 28,5" /></div>
+          <div><label>% Cumplimiento Mejora</label><input id="pctMejora" inputmode="decimal" placeholder="Ej. 20,3" /></div>
+          <div><label>Cobro efectivo Contiene ($)</label><input id="amtContiene" inputmode="decimal" placeholder="Ej. 12000" /></div>
+          <div><label>Cobro efectivo Mejora ($)</label><input id="amtMejora" inputmode="decimal" placeholder="Ej. 8000" /></div>
+          <div><label>Cobro efectivo Deteriora ($)</label><input id="amtDeteriora" inputmode="decimal" placeholder="Ej. 1500" /></div>
+        </div>
+        <div class="bonus-hero" id="bonusHero">
+          <div class="bonus-label">Bonificación fija por perfil</div>
+          <div class="bonus-amount" id="bonusAmount">$0</div>
+          <div class="bonus-message" id="bonusMessage">Selecciona tu perfil para conocer tu beneficio fijo.</div>
+        </div>
+        <div class="callout">La comisión se calcula por cada $100 cobrados. El total final suma: bono fijo + comisión variable.</div>
+        <div class="actions"><button onclick="calculate()">Calcular comisión</button><button class="secondary" onclick="clearInputs()">Limpiar</button></div>
+      </div>
+
+      <div class="card profile-guide">
+        <div class="section-title"><h2>Resumen del beneficio</h2><span class="badge">Bono + comisión</span></div>
+        <div class="guide-metric">
+          <div class="guide-label">Perfil seleccionado</div>
+          <div class="guide-value" id="guideProfile">Élite</div>
+        </div>
+        <div class="guide-metric">
+          <div class="guide-label">Lectura rápida</div>
+          <div class="guide-text" id="coachText">Ingresa tus datos para ver tu oportunidad de comisión.</div>
+        </div>
+        <div class="guide-steps">
+          <div><strong>1</strong><span>Contiene para evitar deterioro.</span></div>
+          <div><strong>2</strong><span>Mejora para elevar tu comisión.</span></div>
+          <div><strong>3</strong><span>Sostén tu perfil para crecer.</span></div>
+        </div>
+        <div class="mini" style="margin-top:14px">Avance referencial hacia el mejor nivel de cumplimiento</div>
+        <div class="bar"><span id="progressBar"></span></div>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi green"><div class="t">Comisión Contiene</div><div id="kpiContiene" class="v">$0</div></div>
+      <div class="kpi blue"><div class="t">Comisión Mejora</div><div id="kpiMejora" class="v">$0</div></div>
+      <div class="kpi"><div class="t">Comisión Deteriora</div><div id="kpiDeteriora" class="v">$0</div></div>
+      <div class="kpi dark"><div class="t">Total estimado</div><div id="kpiTotal" class="v">$0</div></div>
+    </section>
+
+    <section class="tables">
+      <div class="card"><div class="section-title"><h2>2. Escalera Contiene</h2><span id="contRate" class="badge">$0 / $100</span></div><div id="contieneTable"></div></div>
+      <div class="card"><div class="section-title"><h2>3. Escalera Mejora</h2><span id="mejRate" class="badge">$0 / $100</span></div><div id="mejoraTable"></div></div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="section-title"><h2>4. Detalle de cálculo</h2><span class="badge">Bono fijo + comisión</span></div>
+        <table>
+          <thead><tr><th>Concepto</th><th>Valor base</th><th>Tarifa aplicada</th><th>Resultado</th></tr></thead>
+          <tbody id="calcDetail"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="section-title"><h2>5. Reglas del modelo</h2><span class="badge">A - E1</span></div>
+        <p class="mini">Las metas de Contiene y Mejora se construyen con tramos A-B-C-D-E-E1. El tramo AA no se incluye en la tabla de metas.</p>
+        <table>
+          <thead><tr><th>Perfil</th><th>Bono fijo</th><th>Contiene máx.</th><th>Mejora máx.</th></tr></thead>
+          <tbody id="profileSummary"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer-note">App de simulación interna. Los resultados dependen de la información ingresada y de las reglas vigentes del modelo comisional.</div>
+  </div>
+
+<script>
+const DATA = {
+  "Élite": {
+    bonus:350, deteriora:0.25,
+    contiene:[
+      {label:"Grupo 4", min:0, max:0.2869408844, rate:0, range:"0% - 28,69%"},
+      {label:"Grupo 3", min:0.2870408844, max:0.2930253934, rate:2.70, range:"28,70% - 29,30%"},
+      {label:"Grupo 2", min:0.2929253934, max:0.3548186404, rate:3.60, range:"29,29% - 35,48%"},
+      {label:"Grupo 1", min:0.3549186404, max:null, rate:4.80, range:"35,49% o más"}
+    ],
+    mejora:[
+      {label:"Grupo 4", min:0, max:0.262425, rate:0, range:"0% - 26,24%"},
+      {label:"Grupo 3", min:0.262525, max:0.27605, rate:3.78, range:"26,25% - 27,61%"},
+      {label:"Grupo 2", min:0.27595, max:0.3013, rate:5.40, range:"27,60% - 30,13%"},
+      {label:"Grupo 1", min:0.3014, max:null, rate:7.20, range:"30,14% o más"}
+    ]
+  },
+  "Sólido": {
+    bonus:150, deteriora:0.25,
+    contiene:[
+      {label:"Grupo 4", min:0, max:0.2476068683, rate:0, range:"0% - 24,76%"},
+      {label:"Grupo 3", min:0.2477068683, max:0.2548064685, rate:2.10, range:"24,77% - 25,48%"},
+      {label:"Grupo 2", min:0.2547064685, max:0.2616078177, rate:3.00, range:"25,47% - 26,16%"},
+      {label:"Grupo 1", min:0.2617078177, max:null, rate:4.00, range:"26,17% o más"}
+    ],
+    mejora:[
+      {label:"Grupo 4", min:0, max:0.221325, rate:0, range:"0% - 22,13%"},
+      {label:"Grupo 3", min:0.221425, max:0.23555, rate:3.15, range:"22,14% - 23,56%"},
+      {label:"Grupo 2", min:0.23545, max:0.241825, rate:4.50, range:"23,55% - 24,18%"},
+      {label:"Grupo 1", min:0.241925, max:null, rate:6.00, range:"24,19% o más"}
+    ]
+  },
+  "Desarrollo": {
+    bonus:0, deteriora:0.25,
+    contiene:[
+      {label:"Grupo 4", min:0, max:0.2277242403, rate:0, range:"0% - 22,77%"},
+      {label:"Grupo 3", min:0.2278242403, max:0.2342513349, rate:1.05, range:"22,78% - 23,43%"},
+      {label:"Grupo 2", min:0.2341513349, max:0.2382448590, rate:1.50, range:"23,42% - 23,82%"},
+      {label:"Grupo 1", min:0.2383448590, max:null, rate:2.00, range:"23,83% o más"}
+    ],
+    mejora:[
+      {label:"Grupo 4", min:0, max:0.18465, rate:0, range:"0% - 18,47%"},
+      {label:"Grupo 3", min:0.18475, max:0.1940, rate:1.575, range:"18,48% - 19,40%"},
+      {label:"Grupo 2", min:0.1939, max:0.20245, rate:2.25, range:"19,39% - 20,25%"},
+      {label:"Grupo 1", min:0.20255, max:null, rate:3.00, range:"20,26% o más"}
+    ]
+  },
+  "Base": {
+    bonus:0, deteriora:0.25,
+    contiene:[
+      {label:"Grupo 4", min:0, max:0.2277242403, rate:0, range:"0% - 22,77%"},
+      {label:"Grupo 3", min:0.2278242403, max:0.2342513349, rate:0.84, range:"22,78% - 23,43%"},
+      {label:"Grupo 2", min:0.2341513349, max:0.2382448590, rate:1.20, range:"23,42% - 23,82%"},
+      {label:"Grupo 1", min:0.2383448590, max:null, rate:1.60, range:"23,83% o más"}
+    ],
+    mejora:[
+      {label:"Grupo 4", min:0, max:0.18465, rate:0, range:"0% - 18,47%"},
+      {label:"Grupo 3", min:0.18475, max:0.1940, rate:1.26, range:"18,48% - 19,40%"},
+      {label:"Grupo 2", min:0.1939, max:0.20245, rate:1.80, range:"19,39% - 20,25%"},
+      {label:"Grupo 1", min:0.20255, max:null, rate:2.40, range:"20,26% o más"}
+    ]
+  }
+};
+function getNuevoData(month){
+  const factor = month==1?0.6:(month==2?0.9:1);
+  const d = JSON.parse(JSON.stringify(DATA["Desarrollo"]));
+  d.bonus=0; d.deteriora=0.25;
+  d.contiene.forEach(t=>{t.min*=factor; if(t.max!==null)t.max*=factor;});
+  d.mejora.forEach(t=>{t.min*=factor; if(t.max!==null)t.max*=factor;});
+  d.contiene[1].rate=1.28; d.contiene[2].rate=1.60; d.contiene[3].rate=2.00;
+  d.mejora[1].rate=1.92; d.mejora[2].rate=2.40; d.mejora[3].rate=3.00;
+  d.contiene.forEach(t=>t.range = formatRange(t.min,t.max));
+  d.mejora.forEach(t=>t.range = formatRange(t.min,t.max));
+  return d;
+}
+function formatRange(min,max){ if(max===null) return fmtPct(min)+" o más"; return fmtPct(min)+" - "+fmtPct(max); }
+function fmtPct(x){ return (x*100).toLocaleString('es-EC',{minimumFractionDigits:2, maximumFractionDigits:2})+'%'; }
+function fmtMoney(x){ return '$'+(Number(x)||0).toLocaleString('es-EC',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function parseNum(v){ if(v===undefined||v===null) return 0; return Number(String(v).replace(/\$/g,'').replace(/\./g,'').replace(',','.').replace(/%/g,'').trim()) || 0; }
+function pctInput(id){ let n=parseNum(document.getElementById(id).value); return n>1 ? n/100 : n; }
+function amtInput(id){ return parseNum(document.getElementById(id).value); }
+function currentProfile(){ const p=document.getElementById('profile').value; return p==='Nuevo' ? getNuevoData(Number(document.getElementById('newMonth').value)) : DATA[p]; }
+function rateFor(tiers,pct){ let chosen=tiers[0]; for(const t of tiers){ if(pct>=t.min && (t.max===null || pct<=t.max)){ chosen=t; } } return chosen; }
+function renderProfiles(){
+  const sel=document.getElementById('profile'); sel.innerHTML=['Élite','Sólido','Desarrollo','Base','Nuevo'].map(p=>`<option>${p}</option>`).join('');
+  const rows=['Élite','Sólido','Desarrollo','Base'].map(p=>{
+    const d=DATA[p]; return `<tr><td><strong>${p}</strong></td><td>${fmtMoney(d.bonus)}</td><td>${fmtMoney(d.contiene[3].rate)}</td><td>${fmtMoney(d.mejora[3].rate)}</td></tr>`;
+  }).join('') + `<tr><td><strong>Nuevo</strong></td><td>$0,00</td><td>$3,60</td><td>$5,40</td></tr>`;
+  document.getElementById('profileSummary').innerHTML=rows;
+}
+function updateBonusHero(profile, bonus){
+  document.getElementById('bonusAmount').textContent=fmtMoney(bonus);
+  let msg='';
+  if(profile==='Élite') msg='Tu perfil ÉLITE genera una Bonificación Fija de $350. Mantén tu perfil para seguir gozando de este beneficio y continuar siendo referente del equipo.';
+  else if(profile==='Sólido') msg='Tu perfil SÓLIDO genera una Bonificación Fija de $150. Mantén tu desempeño y sigue creciendo para alcanzar el perfil ÉLITE.';
+  else if(profile==='Desarrollo' || profile==='Base') msg='Al momento tu perfil no genera Bono Fijo. Incrementa tu nivel de desempeño para alcanzar los perfiles SÓLIDO y ÉLITE y gozar de este beneficio.';
+  else msg='Como perfil NUEVO estás en curva de adaptación. Aprende la metodología, fortalece tu gestión y avanza hacia los perfiles que generan Bono Fijo.';
+  document.getElementById('bonusMessage').textContent=msg;
+}
+function renderTierTable(containerId, tiers, active){
+  const ordered = [...tiers].sort((a,b)=>b.rate-a.rate);
+  document.getElementById(containerId).innerHTML = `<table><thead><tr><th>Nivel</th><th>Cumplimiento</th><th>$ por $100</th></tr></thead><tbody>`+
+    ordered.map(t=>{
+      const label = t.label.replace('Grupo','Nivel');
+      return `<tr class="${active&&t.label===active.label?'active':''}"><td><span class="tag">${label}</span></td><td>${t.range}</td><td>${fmtMoney(t.rate)}</td></tr>`;
+    }).join('')+`</tbody></table>`;
+}
+function calculate(){
+  const profile = document.getElementById('profile').value;
+  document.getElementById('newMonthBox').style.display = profile==='Nuevo'?'block':'none';
+  const d=currentProfile();
+  updateBonusHero(profile,d.bonus);
+  document.getElementById('guideProfile').textContent = profile;
+  const pctC=pctInput('pctContiene'), pctM=pctInput('pctMejora');
+  const amtC=amtInput('amtContiene'), amtM=amtInput('amtMejora'), amtD=amtInput('amtDeteriora');
+  const tierC=rateFor(d.contiene,pctC), tierM=rateFor(d.mejora,pctM);
+  const comC=amtC/100*tierC.rate, comM=amtM/100*tierM.rate, comD=amtD/100*d.deteriora;
+  const totalVar=comC+comM+comD; const total=totalVar+d.bonus;
+  document.getElementById('kpiContiene').textContent=fmtMoney(comC);
+  document.getElementById('kpiMejora').textContent=fmtMoney(comM);
+  document.getElementById('kpiDeteriora').textContent=fmtMoney(comD);
+  document.getElementById('kpiTotal').textContent=fmtMoney(total);
+  document.getElementById('contRate').textContent=fmtMoney(tierC.rate)+' / $100';
+  document.getElementById('mejRate').textContent=fmtMoney(tierM.rate)+' / $100';
+  renderTierTable('contieneTable',d.contiene,tierC); renderTierTable('mejoraTable',d.mejora,tierM);
+  document.getElementById('calcDetail').innerHTML=`
+    <tr><td>Bono fijo por perfil</td><td>${profile}</td><td>Automático</td><td><strong>${fmtMoney(d.bonus)}</strong></td></tr>
+    <tr><td>Contiene</td><td>${fmtMoney(amtC)}</td><td>${fmtMoney(tierC.rate)} / $100</td><td><strong>${fmtMoney(comC)}</strong></td></tr>
+    <tr><td>Mejora</td><td>${fmtMoney(amtM)}</td><td>${fmtMoney(tierM.rate)} / $100</td><td><strong>${fmtMoney(comM)}</strong></td></tr>
+    <tr><td>Deteriora</td><td>${fmtMoney(amtD)}</td><td>${fmtMoney(d.deteriora)} / $100</td><td><strong>${fmtMoney(comD)}</strong></td></tr>
+    <tr><td><strong>Total variable</strong></td><td></td><td></td><td><strong>${fmtMoney(totalVar)}</strong></td></tr>
+    <tr><td><strong>Total a recibir</strong></td><td>Bono + comisión</td><td></td><td><strong>${fmtMoney(total)}</strong></td></tr>`;
+  updateCoach(profile,pctC,pctM,tierC,tierM,d,total);
+  return {profile,pctC,pctM,amtC,amtM,amtD,tierC,tierM,comC,comM,comD,bonus:d.bonus,totalVar,total};
+}
+function updateCoach(profile,pctC,pctM,tierC,tierM,d,total){
+  const maxC=d.contiene[d.contiene.length-1].min, maxM=d.mejora[d.mejora.length-1].min;
+  const progress=Math.min(100,Math.max(0,((pctC/maxC)+(pctM/maxM))/2*100));
+  document.getElementById('progressBar').style.width=progress+'%';
+  let msg='';
+  if(tierC.rate===0 && tierM.rate===0) msg='Tu mayor oportunidad está en iniciar la contención. Primero evita deterioro, luego busca mejora.';
+  else if(tierC.rate===0) msg='Tu mejora puede ayudar, pero necesitas reforzar Contiene. Recuerda: no existe mejora sin contención.';
+  else if(tierM.rate===0) msg='Estás conteniendo, ahora el reto es transformar más clientes hacia Mejora.';
+  else msg='Buen avance. Sigue protegiendo la cartera con Contiene y subiendo impacto con Mejora.';
+  if(profile==='Élite') msg += ' Como Élite, tu reto es sostener el estándar más alto del equipo.';
+  if(total>=1500) msg += ' Tu resultado se ubica en una zona superior de reconocimiento.';
+  document.getElementById('coachText').textContent=msg;
+}
+function clearInputs(){ ['collector','pctContiene','pctMejora','amtContiene','amtMejora','amtDeteriora'].forEach(id=>document.getElementById(id).value=''); calculate(); }
+function init(){
+  renderProfiles();
+  document.getElementById('profile').addEventListener('change',calculate); document.getElementById('newMonth').addEventListener('change',calculate);
+  ['pctContiene','pctMejora','amtContiene','amtMejora','amtDeteriora'].forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+  calculate();
+}
+init();
+
+// Versión v5: tablas de compensación actualizadas según archivo ESQUEMA COMISION COBRADOR 26 03 2026 (2).xlsx
+</script>
+</body>
+</html>
